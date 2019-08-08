@@ -1,0 +1,51 @@
+pre( [style.display]="loaded ? 'none' : 'block'" ) Loading...
+
+.game( [style.opacity]="loaded ? 1 : 0" )
+    .start-screen( *ngIf="status === 'waiting'" )
+        .start-screen__top
+            .start-screen__title 
+                | GeoQuiz
+            .start-screen__text Do you know all capitals in the world?
+        .start-screen__bottom
+            .g-btn.is-play( tap (click)="startGame()" )
+
+    .game-screen( *ngIf="status === 'playing'" )
+
+        .score-bar
+            .score-bar__current 
+                | Score 
+                strong {{score.scores}}
+            .score-bar__best 
+                | Best Score 
+                strong {{bestScore.scores}}
+
+        .question
+            img( [src]="level.data.flag" )
+            div 
+                span What is the capital of 
+                strong {{level.question}}
+                |
+                | ?
+
+            .progress( [progress]="{max: level.time, current: timer}" )
+                .progress__line
+
+        .answers( [ngClass]="{'is-over': levelOver}" )
+            .answers__item( *ngFor="let a of level.answers; let i = index;" ) 
+                div( [ngClass]="{'was-right': levelOver && a.right, 'was-wrong': levelOver && !a.right, 'was-checked': levelOver && checked===i}" )
+                    strong( tap (click)="chooseAnswer(i); checked=i" ) {{a.text}}
+
+    .score-screen( *ngIf="status === 'finish' || status === 'winner'" )
+
+        .score-screen__top
+            .score-screen__img( [ngClass]="{'score-screen__medal': status === 'finish', 'score-screen__crown': status === 'winner'}" )
+            h1( *ngIf="status === 'finish'" ) Your score 
+            h1( *ngIf="status === 'winner'" ) You are awesome!
+            strong {{score.scores}}
+            span( *ngIf="status === 'finish'" )
+                | Your best score 
+                strong {{bestScore.scores}}
+            span( *ngIf="status === 'winner'" ) This is best of the best result!
+
+        .score-screen__bottom
+            .g-btn.is-restart( tap (click)="startGame()" )
