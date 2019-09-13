@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { GameComponent } from './controllers/game.component';
 
@@ -18,7 +19,8 @@ import { City4LevelGenerator } from './modules/level.generator.city4';
     TapDirective
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [LevelsService, ScoreService, City4LevelGenerator],
   bootstrap: [GameComponent]

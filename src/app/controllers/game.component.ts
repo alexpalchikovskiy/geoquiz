@@ -87,6 +87,7 @@ export class GameComponent {
       if( this.lastAnswer && this.level.last === true ){
         this.scoreService.add( this.level.score, this.level.time );
         this.status = 'winner';
+        this.scoreService.finish();
       }else if( this.lastAnswer ){
         this.scoreService.add( this.level.score, this.level.time );
         this.runLevel();

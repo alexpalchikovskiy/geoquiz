@@ -1,10 +1,13 @@
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Score } from '../data/score.type';
 
+@Injectable()
 export class ScoreService {
     
-    constructor() {
+    constructor( private http: HttpClient ){
         let score = localStorage.getItem( 'bestScore' );
         if( score ){
             this.bestScore = JSON.parse( score );
@@ -15,6 +18,7 @@ export class ScoreService {
                 answers: 0
             }
         }
+
     }
 
     currentScore: Score;
@@ -36,6 +40,10 @@ export class ScoreService {
 
     finish(){
         localStorage.setItem( 'bestScore', JSON.stringify( this.bestScore ) );
+        
+        if( location.search ){
+            let request = this.http.get( `https://badgamebot.ovobox.com/callback_game/${location.search}&score=${this.bestScore.scores}` ).subscribe();
+        }
     }
 
     refresh(){
